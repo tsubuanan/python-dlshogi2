@@ -1,4 +1,4 @@
-import numpy as np
+﻿import numpy as np
 import torch
 
 from cshogi import Board, BLACK, NOT_REPETITION, REPETITION_DRAW, REPETITION_WIN, REPETITION_SUPERIOR, move_to_usi
