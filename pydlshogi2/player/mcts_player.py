@@ -40,7 +40,14 @@ QUEUING = -1
 DISCARDED = -2
 # Virtual Loss
 VIRTUAL_LOSS = 1
-
+TACTICS = {
+    "四間飛車": {"condition": lambda sfen: "R" in sfen.split()[0][6], 
+                "recommendation": "美濃囲いとの組み合わせがおすすめです。"},
+    "中飛車": {"condition": lambda sfen: "R" in sfen.split()[0][4], 
+                "recommendation": "穴熊との組み合わせが有効です。"},
+    "三間飛車": {"condition": lambda sfen: "R" in sfen.split()[0][2], 
+                "recommendation": "高美濃囲いと相性が良いです。"}
+}
 # 温度パラメータを適用した確率分布を取得
 def softmax_temperature_with_normalize(logits, temperature):
     # 温度パラメータを適用
