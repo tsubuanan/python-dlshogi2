@@ -1,3 +1,5 @@
+元のコード
+
 ﻿import numpy as np
 import torch
 
@@ -40,14 +42,7 @@ QUEUING = -1
 DISCARDED = -2
 # Virtual Loss
 VIRTUAL_LOSS = 1
-TACTICS = {
-    "四間飛車": {"condition": lambda sfen: "R" in sfen.split()[0][6], 
-                "recommendation": "美濃囲いとの組み合わせがおすすめです。"},
-    "中飛車": {"condition": lambda sfen: "R" in sfen.split()[0][4], 
-                "recommendation": "穴熊との組み合わせが有効です。"},
-    "三間飛車": {"condition": lambda sfen: "R" in sfen.split()[0][2], 
-                "recommendation": "高美濃囲いと相性が良いです。"}
-}
+
 # 温度パラメータを適用した確率分布を取得
 def softmax_temperature_with_normalize(logits, temperature):
     # 温度パラメータを適用
@@ -207,20 +202,17 @@ class MCTSPlayer(BasePlayer):
             self.root_board.reset()
         elif sfen[:5] == 'sfen ':
             self.root_board.set_sfen(sfen[5:])
-        self.suggest_tactics(self.root_board.sfen())
+
         starting_pos_key = self.root_board.zobrist_hash()
+
         moves = []
         for usi_move in usi_moves:
-　　　　　move = self.root_board.push_usi(usi_move)
-　　　　　moves.append(move)
-　　　　　self.tree.reset_to_position(starting_pos_key, moves)
-def suggest_tactics(self, sfen):
-    for tactic, data in TACTICS.items():
-        if data["condition"](sfen):
-            print(f"info string 戦術提案: {tactic}。{data['recommendation']}")
-            return
-   　　 print("info string 戦術提案: 戦術が特定できません。")
+            move = self.root_board.push_usi(usi_move)
+            moves.append(move)
+        self.tree.reset_to_position(starting_pos_key, moves)
 
+        if self.debug:
+            print(self.root_board)
 
     def set_limits(self, btime=None, wtime=None, byoyomi=None, binc=None, winc=None, nodes=None, infinite=False, ponder=False):
         # 探索回数の閾値を設定
