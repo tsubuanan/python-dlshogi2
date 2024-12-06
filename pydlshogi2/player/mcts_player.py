@@ -200,17 +200,20 @@ class MCTSPlayer(BasePlayer):
             self.root_board.reset()
         elif sfen[:5] == 'sfen ':
             self.root_board.set_sfen(sfen[5:])
-
+        self.suggest_tactics(self.root_board.sfen())
         starting_pos_key = self.root_board.zobrist_hash()
-
         moves = []
         for usi_move in usi_moves:
-            move = self.root_board.push_usi(usi_move)
-            moves.append(move)
-        self.tree.reset_to_position(starting_pos_key, moves)
+　　　　　move = self.root_board.push_usi(usi_move)
+　　　　　moves.append(move)
+　　　　　self.tree.reset_to_position(starting_pos_key, moves)
+def suggest_tactics(self, sfen):
+    for tactic, data in TACTICS.items():
+        if data["condition"](sfen):
+            print(f"info string 戦術提案: {tactic}。{data['recommendation']}")
+            return
+   　　 print("info string 戦術提案: 戦術が特定できません。")
 
-        if self.debug:
-            print(self.root_board)
 
     def set_limits(self, btime=None, wtime=None, byoyomi=None, binc=None, winc=None, nodes=None, infinite=False, ponder=False):
         # 探索回数の閾値を設定
