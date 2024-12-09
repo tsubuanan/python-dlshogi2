@@ -204,13 +204,12 @@ class MCTSPlayer(BasePlayer):
         self.eval_node()
 
     def suggest_tactics(self, sfen):
-        """
-        現在のSFEN形式の盤面情報を基に戦術を提案するメソッド
-        """
+        print(f"DEBUG: 現在のSFEN: {sfen}")  # デバッグ用出力
         for tactic, data in TACTICS.items():
             if data["condition"](sfen):
                 print(f"info string 戦術提案: {tactic}。{data['recommendation']}")
                 return
+            
         print("info string 戦術提案: 戦術が特定できません。")
 
     def position(self, sfen, usi_moves):
