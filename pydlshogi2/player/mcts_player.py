@@ -1,4 +1,4 @@
-﻿import numpy as np
+import numpy as np
 import torch
 
 from cshogi import Board, BLACK, NOT_REPETITION, REPETITION_DRAW, REPETITION_WIN, REPETITION_SUPERIOR, move_to_usi
@@ -9,6 +9,12 @@ from pydlshogi2.player.base_player import BasePlayer
 
 import time
 import math
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 
 # デフォルトGPU ID
 DEFAULT_GPU_ID = 0
@@ -204,13 +210,13 @@ class MCTSPlayer(BasePlayer):
         self.eval_node()
 
     def suggest_tactics(self, sfen):
-        print(f"DEBUG: 現在のSFEN: {sfen}")  # デバッグ用出力
+        logger.debug(f"現在のSFEN: {sfen}")
         for tactic, data in TACTICS.items():
             if data["condition"](sfen):
-                print(f"info string 戦術提案: {tactic}。{data['recommendation']}")
+                logger.info(f"戦術提案: {tactic}。{data['recommendation']}")
                 return
-            
-        print("info string 戦術提案: 戦術が特定できません。")
+        logger.warning("戦術が特定できません。")
+
 
     def position(self, sfen, usi_moves):
         if sfen == 'startpos':
